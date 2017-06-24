@@ -1,0 +1,17 @@
+{
+  "CN": "admin",
+  "hosts": [],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "DE",
+      "L": "Berlin",
+      "O": "system:masters",
+      "OU": "Cluster",
+      "ST": "Berlin"
+    }
+  ]
+}

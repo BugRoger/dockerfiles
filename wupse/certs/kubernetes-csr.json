@@ -1,0 +1,26 @@
+{
+  "CN": "kubernetes",
+  "hosts": [
+    "192.168.1.13",
+    "192.168.1.14",
+    "192.168.1.15",
+    "10.1.0.1",
+    "127.0.0.1",
+    "localhost",
+    "kubernetes.default",
+    "wupse"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "DE",
+      "L": "Berlin",
+      "O": "Kubernetes",
+      "OU": "Cluster",
+      "ST": "Berlin"
+    }
+  ]
+}

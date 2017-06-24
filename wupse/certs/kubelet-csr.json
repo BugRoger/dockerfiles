@@ -1,0 +1,17 @@
+{
+  "CN": "system:node:kubelet",
+  "hosts": [],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "DE",
+      "L": "Berlin",
+      "O": "system:nodes",
+      "OU": "Cluster",
+      "ST": "Berlin"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+IMAGE       := bugroger/wupse
+VERSION     := 1.0
+
+.PHONY: build
+build:
+	docker build -t $(IMAGE):$(VERSION) --rm .
+
+.PHONY: push
+push:
+	docker push $(IMAGE):$(VERSION)

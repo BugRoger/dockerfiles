@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: etcd 
+spec:
+  ports:
+    - port: 2379 
+  selector:
+    app: etcd
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: etcd 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: etcd
+    spec:
+      volumes:
+        - name: data
+          hostPath:
+            path: /var/lib/etcd
+      containers: 
+        - name: etcd
+          image: gcr.io/google_containers/etcd:3.0.17
+          env:
+            - name: ETCD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          command: ["sh", "-xec"]
+          args:
+            - etcd 
+              --name cke 
+              --data-dir /var/lib/etcd
+              --advertise-client-urls http://$ETCD_IP:2379 
+              --initial-advertise-peer-urls http://$ETCD_IP:2380 
+              --initial-cluster cke=http://$ETCD_IP:2380
+              --listen-client-urls http://0.0.0.0:2379
+              --listen-peer-urls http://$ETCD_IP:2380 
+          volumeMounts:
+            - mountPath: /var/lib/etcd
+              name: data 
