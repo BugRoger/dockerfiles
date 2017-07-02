@@ -1,0 +1,36 @@
+[Unit]
+After=rpc-statd.service nvidia.service
+Requires=rpc-statd.service nvidia.service
+
+[Service]
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin:/usr/share/oem/bin
+Environment=KUBELET_IMAGE_TAG=v1.7.0_coreos.0
+Environment="RKT_RUN_ARGS=--uuid-file-save=/var/run/kubelet-pod.uuid \
+  --volume=resolv,kind=host,source=/etc/resolv.conf \
+  --mount volume=resolv,target=/etc/resolv.conf \
+  --volume iscsiadm,kind=host,source=/usr/sbin/iscsiadm \
+  --mount volume=iscsiadm,target=/usr/sbin/iscsiadm \
+  --volume usr-sbin-iscsid,kind=host,source=/usr/sbin/iscsid \
+  --mount volume=usr-sbin-iscsid,target=/usr/sbin/iscsid \
+  --volume etc-iscsi,kind=host,source=/etc/iscsi \
+  --mount volume=etc-iscsi,target=/etc/iscsi \
+  --insecure-options=paths"
+ExecStart=/opt/bin/kubelet-wrapper \
+  --allow-privileged \
+  --cluster_dns=10.1.0.254 \
+  --cluster-domain=kubernetes.d26a.de \
+  --feature-gates=Accelerators=true \
+  --pod-manifest-path=/etc/kubernetes/manifests \
+  --network-plugin=kubenet \
+  --pod-cidr=10.0.15.0/24 \
+  --require-kubeconfig \
+  --kubeconfig=/etc/kubernetes/configs/kubelet \
+  --client-ca-file=/etc/kubernetes/certs/kubelet-clients-ca.pem \
+  --tls-cert-file=/etc/kubernetes/certs/tls-apiserver.pem \
+  --tls-private-key-file=/etc/kubernetes/certs/tls-apiserver-key.pem \
+  --v=2
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

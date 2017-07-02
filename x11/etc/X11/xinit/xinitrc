@@ -1,0 +1,10 @@
+#!/bin/sh
+
+nvidia-smi -pl 100
+
+for i in $(seq 0 5)
+do
+  nvidia-settings --assign "[gpu:${i}]/GPUPowerMizerMode=1" --assign "[gpu:${i}]/GPUGraphicsClockOffset[3]=200" --assign "[gpu:${i}]/GPUMemoryTransferRateOffset[3]=800"
+done
+
+sleep infinity

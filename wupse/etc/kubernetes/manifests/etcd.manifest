@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: etcd
+  namespace: kube-system
+
+spec:
+  hostNetwork: true
+  volumes:
+    - name: etc-kubernetes
+      hostPath:
+        path: /etc/kubernetes
+    - name: data
+      hostPath:
+        path: /var/lib/etcd
+  containers: 
+    - name: etcd
+      image: gcr.io/google_containers/etcd:3.0.17
+      env:
+        - name: HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+      command: ["etcd"]
+      args:
+        - --name=wupse 
+        - --data-dir=/var/lib/etcd
+        - --advertise-client-urls=https://127.0.0.1:2379,https://$(HOST_IP):2379 
+        - --listen-client-urls=https://127.0.0.1:2379,https://$(HOST_IP):2379
+        - --initial-advertise-peer-urls=https://$(HOST_IP):2380 
+        - --listen-peer-urls=https://$(HOST_IP):2380 
+        - --initial-cluster=wupse=https://$(HOST_IP):2380
+        - --client-cert-auth
+        - --trusted-ca-file=/etc/kubernetes/certs/etcd-clients-ca.pem
+        - --cert-file=/etc/kubernetes/certs/etcd-clients-tls.pem
+        - --key-file=/etc/kubernetes/certs/etcd-clients-tls-key.pem
+        - --peer-client-cert-auth
+        - --peer-trusted-ca-file=/etc/kubernetes/certs/etcd-peers-ca.pem
+        - --peer-cert-file=/etc/kubernetes/certs/etcd-peers-universal.pem
+        - --peer-key-file=/etc/kubernetes/certs/etcd-peers-universal-key.pem
+      volumeMounts:
+        - mountPath: /var/lib/etcd
+          name: data 
+        - mountPath: /etc/kubernetes
+          name: etc-kubernetes
+          readOnly: true

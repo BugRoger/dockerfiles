@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: kube-apiserver
+  namespace: kube-system
+
+spec:
+  hostNetwork: true
+  volumes:
+    - name: etc-kubernetes
+      hostPath:
+        path: /etc/kubernetes
+  containers:
+    - name: kube-apiserver
+      image: quay.io/coreos/hyperkube:v1.7.0_coreos.0
+      env:
+        - name: HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+      args: 
+        - /hyperkube
+        - apiserver
+        - --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota
+        - --advertise-address=$(HOST_IP)
+        - --allow-privileged=true
+        - --authorization-mode=RBAC
+        - --etcd-servers=https://127.0.0.1:2379
+        - --runtime-config=rbac.authorization.k8s.io/v1alpha1,extensions/v1beta1=true,extensions/v1beta1/thirdpartyresources=true
+        - --service-cluster-ip-range=10.1.0.0/16
+        # Cert Spratz
+        - --etcd-cafile=/etc/kubernetes/certs/etcd-clients-ca.pem
+        - --etcd-certfile=/etc/kubernetes/certs/etcd-clients-apiserver.pem
+        - --etcd-keyfile=/etc/kubernetes/certs/etcd-clients-apiserver-key.pem
+        - --client-ca-file=/etc/kubernetes/certs/apiserver-clients-ca.pem
+        - --service-account-key-file=/etc/kubernetes/certs/apiserver-clients-ca.pem
+        - --kubelet-certificate-authority=/etc/kubernetes/certs/tls-ca.pem 
+        - --kubelet-client-certificate=/etc/kubernetes/certs/kubelet-clients-apiserver.pem
+        - --kubelet-client-key=/etc/kubernetes/certs/kubelet-clients-apiserver-key.pem
+        - --tls-ca-file=/etc/kubernetes/certs/tls-ca.pem                                     
+        - --tls-cert-file=/etc/kubernetes/certs/tls-apiserver.pem 
+        - --tls-private-key-file=/etc/kubernetes/certs/tls-apiserver-key.pem 
+        - --v=5
+      volumeMounts:
+        - mountPath: /etc/kubernetes
+          name: etc-kubernetes
+          readOnly: true
