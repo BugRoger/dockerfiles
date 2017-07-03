@@ -16,11 +16,9 @@ RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* 
 
 RUN echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/cuda.conf 
-RUN echo "/usr/local/nvidia/lib" >> /etc/ld.so.conf.d/nvidia.conf 
 RUN echo "/usr/local/nvidia/lib64" >> /etc/ld.so.conf.d/nvidia.conf
 
-ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
-ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64
-
+ENV PATH $PATH:/usr/local/nvidia/bin:/usr/local/cuda/bin
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/nvidia/lib64/:/usr/local/cuda/lib64/
 
 ENTRYPOINT ["/claymore-dual-miner/ethdcrminer64"]
