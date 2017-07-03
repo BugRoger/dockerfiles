@@ -1,5 +1,5 @@
-IMAGE       := bugroger/wupse
-VERSION     := 1.0
+IMAGE   := bugroger/coreos-kubernetes-installer
+VERSION := wupse.d26a.de
 
 .PHONY: build
 build:
