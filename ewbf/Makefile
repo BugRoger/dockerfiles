@@ -9,7 +9,7 @@ build:
 push:
 	docker push $(IMAGE):$(VERSION)
 
-.PHONY: build
+.PHONY: publish 
 publish:
 	docker build --build-arg VERSION=$(VERSION) -t $(IMAGE):$(VERSION) --rm --squash .
 
