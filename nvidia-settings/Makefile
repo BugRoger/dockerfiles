@@ -1,5 +1,5 @@
 IMAGE   := bugroger/nvidia-settings
-VERSION := 1.0 
+VERSION := v201707221322
 
 .PHONY: build
 build:

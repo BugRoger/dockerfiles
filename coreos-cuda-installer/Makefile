@@ -1,5 +1,5 @@
 IMAGE          := bugroger/coreos-cuda-installer
-COREOS_VERSION := 1409.5.0
+COREOS_VERSION := 1409.7.0
 CUDA_VERSION   := 8.0.61
 
 .PHONY: build

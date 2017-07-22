@@ -1,5 +1,5 @@
 IMAGE   := bugroger/claymore-dual-miner
-VERSION := 9.6
+VERSION := 9.7
 
 .PHONY: build
 build:
