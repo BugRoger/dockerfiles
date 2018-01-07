@@ -1,0 +1,29 @@
+FROM bugroger/cuda:8.0.61_375.26
+
+ENV BUILD_PACKAGES  libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential gcc-5 g++-5 git
+
+
+RUN chmod 1777 /tmp
+
+RUN apt-get update 
+RUN apt-get install -y $BUILD_PACKAGES
+
+RUN git clone https://github.com/Nanashi-Meiyo-Meijin/ccminer.git
+
+WORKDIR ccminer
+
+RUN make distclean || echo clean
+RUN ./autogen.sh || echo done
+RUN ./configure.sh
+RUN make -j 4
+
+
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/* 
+
+RUN echo "/usr/local/cuda/lib64" >> /etc/ld.so.conf.d/cuda.conf 
+RUN echo "/usr/local/nvidia/lib64" >> /etc/ld.so.conf.d/nvidia.conf
+
+ENV PATH $PATH:/usr/local/nvidia/bin:/usr/local/cuda/bin
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/nvidia/lib64/:/usr/local/cuda/lib64/
+
