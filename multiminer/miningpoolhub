@@ -1,0 +1,57 @@
+#!/bin/bash
+
+#lyra2z : us-east.lyra2z-hub.miningpoolhub.com:12025
+#            europe.lyra2z-hub.miningpoolhub.com:12025
+#            asia.lyra2z-hub.miningpoolhub.com:12025
+#cryptonight : us-east.cryptonight-hub.miningpoolhub.com:12024
+#            europe.cryptonight-hub.miningpoolhub.com:12024
+#            asia.cryptonight-hub.miningpoolhub.com:12024
+#equihash : us-east.equihash-hub.miningpoolhub.com:12023
+#            europe.equihash-hub.miningpoolhub.com:12023
+#            asia.equihash-hub.miningpoolhub.com:12023
+#ethash : us-east.ethash-hub.miningpoolhub.com:12020
+#            europe.ethash-hub.miningpoolhub.com:12020
+#            asia.ethash-hub.miningpoolhub.com:12020
+#blake-vanilla : stratum+tcp://hub.miningpoolhub.com:12019
+#lyra2re2 : stratum+tcp://hub.miningpoolhub.com:12018
+#skein : stratum+tcp://hub.miningpoolhub.com:12016
+#quark : stratum+tcp://hub.miningpoolhub.com:12015
+#qubit : stratum+tcp://hub.miningpoolhub.com:12014
+#neoscrypt : stratum+tcp://hub.miningpoolhub.com:12012
+#x15 : stratum+tcp://hub.miningpoolhub.com:12009
+#x13 : stratum+tcp://hub.miningpoolhub.com:12008
+#x11 : stratum+tcp://hub.miningpoolhub.com:12007
+#MyriadGroestl : stratum+tcp://hub.miningpoolhub.com:12005
+#Groestl : stratum+tcp://hub.miningpoolhub.com:12004
+#Keccak : stratum+tcp://hub.miningpoolhub.com:12003
+#Scrypt-N : stratum+tcp://hub.miningpoolhub.com:12002
+#Scrypt : stratum+tcp://hub.miningpoolhub.com:12001
+
+USER=BugRoger
+WORKER=wupse
+PASS=x
+
+#EthDcrMiner64.exe -epool us-east.ethash-hub.miningpoolhub.com:12020 -ewal username.workername -eworker username.workername -esm 3 -epsw x -allcoins 1 -retrydelay -1
+#ethminer --farm-retries 0 -G -S us-east.ethash-hub.miningpoolhub.com:12020 -O username.workername:x -FS exit
+
+# equihash, ZCash
+zm --server europe.equihash-hub.miningpoolhub.com --port 12023 --user $USER.$WORKER --pass $PASS --noreconnect
+
+ccminer -r 0 -a groestl     -o stratum+tcp://hub.miningpoolhub.com:12004 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a myr-gr      -o stratum+tcp://hub.miningpoolhub.com:12005 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a x11         -o stratum+tcp://hub.miningpoolhub.com:12007 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a x13         -o stratum+tcp://hub.miningpoolhub.com:12008 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a x15         -o stratum+tcp://hub.miningpoolhub.com:12009 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a neoscrypt   -o stratum+tcp://hub.miningpoolhub.com:12012 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a qubit       -o stratum+tcp://hub.miningpoolhub.com:12014 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a quark       -o stratum+tcp://hub.miningpoolhub.com:12015 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a skein       -o stratum+tcp://hub.miningpoolhub.com:12016 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a lyra2v2     -o stratum+tcp://hub.miningpoolhub.com:12018 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a vanilla     -o stratum+tcp://hub.miningpoolhub.com:12019 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a cryptonight -o stratum+tcp://europe.cryptonight-hub.miningpoolhub.com:12024 -u $USER.$WORKER -p $PASS
+ccminer -r 0 -a lyra2z      -o stratum+tcp://europe.lyra2z-hub.miningpoolhub.com:12025 -u $USER.$WORKER -p $PASS
+
+# ethash
+ethdcrminer64 -epool stratum+tcp://europe.ethash-hub.miningpoolhub.com:12020 -ewal $USER.$WORKER -eworker $USER.$WORKER -epsw $PASS -esm 2 \
+              -dpool stratum+tcp://hub.miningpoolhub.com:20550 -dwal $USER.$WORKER -dpsw $PASS -dcoin sc \
+              -retrydelay -1 -allcoins 1
