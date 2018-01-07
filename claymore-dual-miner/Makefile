@@ -1,5 +1,7 @@
 IMAGE   := bugroger/claymore-dual-miner
-VERSION := 9.7
+VERSION := v10.2
+
+# See https://bitcointalk.org/index.php?topic=1433925.0
 
 .PHONY: build
 build:
