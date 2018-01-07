@@ -1,6 +1,6 @@
 IMAGE                 := bugroger/cuda
 VERSION               := 8.0.61_375.26
-NVIDIA_DRIVER_VERSION := 381.22
+NVIDIA_DRIVER_VERSION := 384.90
 
 .PHONY: build
 build:

@@ -1,9 +1,7 @@
 IMAGE          := bugroger/coreos-nvidia-installer
-COREOS_VERSION := 1409.7.0
-DRIVER_VERSION := 381.22
+COREOS_VERSION := 1576.5.0
+DRIVER_VERSION := 384.111
 VERSION        := $(COREOS_VERSION)-$(DRIVER_VERSION)
-
-
 
 .PHONY: build
 build:

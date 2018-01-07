@@ -1,9 +1,9 @@
 IMAGE := bugroger/nvidia
-VERSION := 381.22
+VERSION := 384.111
 
 .PHONY: build
 build:
-	docker build --build-arg NVIDIA_DRIVER_VERSION=$(VERSION) -t $(IMAGE):$(VERSION) --rm .
+	docker build --no-cache --build-arg NVIDIA_DRIVER_VERSION=$(VERSION) -t $(IMAGE):$(VERSION) --rm .
 
 .PHONY: push
 push:

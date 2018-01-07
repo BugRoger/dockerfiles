@@ -1,6 +1,7 @@
 #!/bin/sh
 
-nvidia-smi -pl 100
+nvidia-smi -pl 100 
+nvidia-smi -pm 1
 
 for i in $(seq 0 5)
 do
