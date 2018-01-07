@@ -1,5 +1,5 @@
 IMAGE   := bugroger/creepminer
-VERSION := v201708061439
+VERSION := v201801051807
 
 .PHONY: build
 build:
@@ -11,6 +11,6 @@ push:
 
 .PHONY: publish 
 publish:
-	docker build --no-cache -t $(IMAGE):$(VERSION) --rm --squash .
+	docker build -t $(IMAGE):$(VERSION) --rm --squash .
 
 
