@@ -7,10 +7,7 @@ IMAGE   := bugroger/hkknx
 all: build push
 
 build:
-	docker buildx build --progress=plain --push --platform linux/amd64,linux/arm --build-arg HKKNX=$(HKKNX) -t $(IMAGE):$(VERSION) -t $(IMAGE):$(VERSION) --rm .
-	docker pull $(IMAGE):$(VERSION)
-	docker tag $(IMAGE):$(VERSION) $(IMAGE):latest
-	docker push $(IMAGE):latest
+	docker buildx build --push --platform linux/amd64,linux/arm --build-arg HKKNX=$(HKKNX) -t $(IMAGE):latest -t $(IMAGE):$(VERSION) --rm .
 
 push:
 	docker push $(IMAGE)
