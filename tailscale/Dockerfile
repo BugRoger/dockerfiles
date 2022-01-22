@@ -1,16 +1,24 @@
-FROM ubuntu:20.04
+FROM alpine:3.11 AS build
 
-RUN apt-get update && \
-    apt-get -y --no-install-recommends install curl gnupg ca-certificates && \
-    curl https://pkgs.tailscale.com/stable/ubuntu/focal.gpg | apt-key add - && \
-    curl https://pkgs.tailscale.com/stable/ubuntu/focal.list | tee /etc/apt/sources.list.d/tailscale.list && \
-    apt-get update && \
-    apt-get -y --no-install-recommends install tailscale=0.100.0~153 && \
-    apt-get purge -y curl gnupg && \
-    apt-get autoremove -y && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+ARG TARGETARCH
+ARG CHANNEL=stable
+ARG VERSION=0.100.0-153
 
-VOLUME /var/lib/tailscale
+RUN mkdir /build
+WORKDIR /build
+RUN apk add --no-cache curl tar
 
-ENTRYPOINT tailscaled --state=/var/lib/tailscale/tailscaled.state
+RUN echo "https://pkgs.tailscale.com/${CHANNEL}/tailscale_${VERSION}_${TARGETARCH}.tgz"
+RUN curl -vsLo tailscale.tar.gz "https://pkgs.tailscale.com/${CHANNEL}/tailscale_${VERSION}_${TARGETARCH}.tgz" && \
+    tar xvf tailscale.tar.gz && \
+    mv "tailscale_${VERSION}_${TARGETARCH}/tailscaled" . && \
+    mv "tailscale_${VERSION}_${TARGETARCH}/tailscale" .
+
+FROM alpine:3.11
+
+RUN apk add --no-cache iptables
+
+COPY --from=build /build/tailscale /usr/bin/
+COPY --from=build /build/tailscaled /usr/bin/
+
+ENTRYPOINT /usr/bin/tailscaled

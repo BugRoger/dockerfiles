@@ -1,5 +1,5 @@
 IMAGE := bugroger/octoprint
-VERSION := 1.7.2-0
+VERSION := 1.7.2-1
 
 .PHONY: build
 build:
@@ -12,6 +12,6 @@ push:
 
 .PHONY: publish 
 publish:
-	docker buildx --platform linux/arm64 $(IMAGE):$(VERSION) --rm --squash .
+	docker buildx ---platform linux/arm/v7 $(IMAGE):$(VERSION) --rm --squash .
 
 
