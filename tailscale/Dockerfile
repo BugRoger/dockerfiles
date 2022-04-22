@@ -2,7 +2,7 @@ FROM alpine:3.11 AS build
 
 ARG TARGETARCH
 ARG CHANNEL=stable
-ARG VERSION=0.100.0-153
+ARG VERSION=1.22.2
 
 RUN mkdir /build
 WORKDIR /build
