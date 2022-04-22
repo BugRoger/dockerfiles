@@ -1,5 +1,5 @@
 IMAGE := bugroger/octoprint
-VERSION := 1.7.2-1
+VERSION := 1.7.3-0
 
 .PHONY: build
 build:

@@ -8,7 +8,7 @@ RUN make
 FROM  alpine:3.15.0 
 RUN apk --update --no-cache add curl python3 py-pip openssl ca-certificates
 WORKDIR /opt/octoprint
-RUN curl -sL https://github.com/OctoPrint/OctoPrint/archive/refs/tags/1.7.2.tar.gz | tar xvz --strip-components=1
+RUN curl -sL https://github.com/OctoPrint/OctoPrint/archive/refs/tags/1.7.3.tar.gz | tar xvz --strip-components=1
 RUN apk --no-cache add --virtual build-dependencies python3-dev linux-headers build-base gcc   && pip install -r requirements.txt   && python3 setup.py install   && apk del build-dependencies
 
 # Intall mjpp_streamer
@@ -27,7 +27,7 @@ RUN apk --update --no-cache add --virtual build-dependencies python3-dev gcc lin
 
 # Firmware Updater
 WORKDIR /opt/octoprint/OctoPrint-FirmwareUpdater
-RUN curl -sL https://github.com/OctoPrint/OctoPrint-FirmwareUpdater/archive/refs/tags/1.13.0.tar.gz | tar xvz --strip-components=1
+RUN curl -sL https://github.com/OctoPrint/OctoPrint-FirmwareUpdater/archive/refs/tags/1.13.1.tar.gz | tar xvz --strip-components=1
 RUN apk --update --no-cache add avrdude
 RUN apk --update --no-cache add --virtual build-dependencies python3-dev gcc linux-headers build-base && \
     pip install -r requirements.txt && \
@@ -44,7 +44,23 @@ RUN apk --update --no-cache add --virtual build-dependencies python3-dev gcc lin
 
 # BedLevelVisualizer
 WORKDIR /opt/octoprint/OctoPrint-BedLevelVisualizer
-RUN curl -sL https://github.com/jneilliii/OctoPrint-BedLevelVisualizer/archive/refs/tags/1.1.0.tar.gz | tar xvz --strip-components=1
+RUN curl -sL https://github.com/jneilliii/OctoPrint-BedLevelVisualizer/archive/refs/tags/1.1.1.tar.gz | tar xvz --strip-components=1
+RUN apk --update --no-cache add --virtual build-dependencies python3-dev gcc linux-headers build-base && \
+    pip install -r requirements.txt && \
+    python3 setup.py install && \
+    apk del build-dependencies 
+
+# Pushover
+WORKDIR /opt/octoprint/OctoPrint-Pushover
+RUN curl -sL https://github.com/thijsbekke/OctoPrint-Pushover/archive/refs/tags/0.3.8.tar.gz | tar xvz --strip-components=1
+RUN apk --update --no-cache add --virtual build-dependencies python3-dev gcc linux-headers build-base && \
+    pip install -r requirements.txt && \
+    python3 setup.py install && \
+    apk del build-dependencies 
+
+# Telegram
+WORKDIR /opt/octoprint/OctoPrint-Telegram
+RUN curl -sL https://github.com/fabianonline/OctoPrint-Telegram/archive/refs/tags/1.6.5.tar.gz | tar xvz --strip-components=1
 RUN apk --update --no-cache add --virtual build-dependencies python3-dev gcc linux-headers build-base && \
     pip install -r requirements.txt && \
     python3 setup.py install && \
