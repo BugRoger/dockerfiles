@@ -28,7 +28,7 @@ jobs:
           docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/hkknx:${{ steps.hkknx-public_releases.outputs.latest_tag }}
           echo "IMAGE_EXISTS=$?" >> $GITHUB_ENV
       - name: Build and push
-        if: env.IMAGE_EXISTS == "1"
+        if: env.IMAGE_EXISTS == 1
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}:hkknx"
