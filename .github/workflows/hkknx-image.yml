@@ -3,28 +3,8 @@ name: HKKNX Docker Image CI
 on:
   workflow_dispatch:
 
-jobs:
-  preflight:
-    runs-on: ubuntu-latest
-    outputs:
-      latest_tag: ${{ steps.release.outputs.latest_tag }}
-      image_exists: ${{ steps.image.outputs.image_exists }}
-    steps:
-      - name: Get Latest HKKNX Release
-        id: release
-        uses: abatilo/release-info-action@v1.3.0
-        with:
-          owner: brutella
-          repo: hkknx-public
-      - name: Check Image    
-        id: image
-        run: |
-          docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/hkknx:${{ steps.hkknx-public_releases.outputs.latest_tag }}
-          echo "::set-output name=image_exists::$?"
-  
+jobs:  
   build:
-    needs: preflight
-    if: ${{ needs.preflight.outputs.image_exists }} == "1"
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -36,12 +16,24 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Get Latest HKKNX Release
+        id: release
+        uses: abatilo/release-info-action@v1.3.0
+        with:
+          owner: brutella
+          repo: hkknx-public
+      - name: Check Image    
+        id: image
+        run: |
+          docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/hkknx:${{ steps.hkknx-public_releases.outputs.latest_tag }}
+          echo "IMAGE_EXISTS=$?" >> $GITHUB_ENV
       - name: Build and push
+        if: env.IMAGE_EXISTS == "1"
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}:hkknx"
           platforms: linux/amd64,linux/arm
           build-args: |
-            HKKNX=${{ needs.preflight.outputs.latest_tag }}
+            HKKNX=${{ steps.release.outputs.latest_tag }}
           push: true
-          tags: bugroger/hkknx:latest,bugroger/hkknx:${{ needs.preflight.outputs.latest_tag }}
+          tags: bugroger/hkknx:latest,bugroger/hkknx:${{ steps.release.outputs.latest_tag }}
