@@ -19,8 +19,8 @@ jobs:
       - name: Check Image    
         id: image
         run: |
-          docker manifest inspect "${{ secrets.DOCKERHUB_USERNAME }}/hkknx:${{ steps.hkknx-public_releases.outputs.latest_tag }}" > /dev/null
-          echo "::set-output name=image_exists::${{ echo $? }"
+          docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/hkknx:${{ steps.hkknx-public_releases.outputs.latest_tag }} > /dev/null
+          echo "::set-output name=image_exists::${{ echo $? }}"
   
   build:
     needs: preflight
