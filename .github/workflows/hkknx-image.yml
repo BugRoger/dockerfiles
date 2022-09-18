@@ -25,10 +25,9 @@ jobs:
       - name: Check Image    
         id: image
         run: |
-          docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/hkknx:${{ steps.release.outputs.latest_tag }}
-          echo "IMAGE_EXISTS=$?" >> $GITHUB_ENV
+          docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/hkknx:${{ steps.release.outputs.latest_tag }} && echo "IMAGE_EXISTS=true" >> $GITHUB_ENV || true
       - name: Build and push
-        if: env.IMAGE_EXISTS == 1
+        if: env.IMAGE_EXISTS != nil
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}:hkknx"
