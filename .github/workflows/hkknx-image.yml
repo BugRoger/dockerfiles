@@ -1,4 +1,4 @@
-name: HKKNX Docker Image CI
+name: Release HKKNX Docker Image
 
 on:
   workflow_dispatch:
