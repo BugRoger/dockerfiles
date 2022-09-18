@@ -6,7 +6,7 @@ on:
 jobs:
   preflight:
     runs-on: ubuntu-latest
-     outputs:
+    outputs:
       latest_tag: ${{ steps.release.outputs.latest_tag }}
       image_exists: ${{ steps.image.outputs.image_exists }}
     steps:
