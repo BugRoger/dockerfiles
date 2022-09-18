@@ -18,7 +18,7 @@ jobs:
           repo: hkknx-public
       - name: Check Image    
         id: image
-        run:
+        run: |
           docker manifest inspect ${{ secrets.DOCKERHUB_USERNAME }}/hkknx:${{ steps.hkknx-public_releases.outputs.latest_tag }} > /dev/null ; 
           echo "::set-output name=image_exists::${{ echo $? }"
   
