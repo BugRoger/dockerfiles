@@ -24,10 +24,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v3
-        env:
-          HKKNX: ${{ steps.hkknx-public_releases.outputs.latest_tag }}
         with:
           context: "{{defaultContext}}:hkknx"
           platforms: linux/amd64,linux/arm
+          build-args: |
+            HKKNX=${{ steps.hkknx-public_releases.outputs.latest_tag }}
           push: true
           tags: bugroger/hkknx:latest,bugroger/hkknx:${{ steps.hkknx-public_releases.outputs.latest_tag }}
