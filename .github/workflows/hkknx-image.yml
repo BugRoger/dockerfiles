@@ -32,7 +32,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}:hkknx"
-          platforms: linux/amd64,linux/arm
+          platforms: linux/amd64,linux/arm,linux/arm64/v8
           build-args: |
             HKKNX=${{ steps.release.outputs.latest_tag }}
           push: true
