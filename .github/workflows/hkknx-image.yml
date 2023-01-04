@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Get Latest HKKNX Release
         id: release
-        uses: abatilo/release-info-action@v1.3.0
+        uses: abatilo/release-info-action@v1.3.2
         with:
           owner: brutella
           repo: hkknx-public
