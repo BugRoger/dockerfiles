@@ -1,0 +1,2 @@
+ARG RELEASE
+FROM oznu/homebridge:$RELEASE

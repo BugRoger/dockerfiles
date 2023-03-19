@@ -1,4 +1,4 @@
-HKKNX   ?= 2.5.2
+HKKNX   ?= 2.4.1
 BUILD   ?= $(shell date +%Y%m%d%H%M)
 VERSION := $(HKKNX)-$(BUILD)
 IMAGE   := bugroger/hkknx
